@@ -6,6 +6,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Bosca_Dana_Music
 {
+    [Table("Artist")]
     public class Artist
     {
         

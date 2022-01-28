@@ -8,10 +8,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Bosca_Dana_Music.Models
 {
+    [Table("Genre")]
     public class Genre
     {
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int GenreID { get; set; }
+        public int GenreId { get; set; }
 
         public string Name { get; set; }
 
@@ -20,14 +21,14 @@ namespace Bosca_Dana_Music.Models
 
         public Genre()
         {
-            GenreID = -1;
+            GenreId = -1;
             Name = string.Empty;
             Description = string.Empty;
         }
 
         public Genre(int iD, string name, string description)
         {
-            GenreID = iD;
+            GenreId = iD;
             Name = name;
             Description = description;
         }

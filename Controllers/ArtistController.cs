@@ -54,7 +54,7 @@ namespace Bosca_Dana_Music.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("ArtistId,Name,Description,FormedDate")] Artist artist)
+        public async Task<IActionResult> Create([Bind("Name,Description,FormedDate")] Artist artist)
         {
             if (ModelState.IsValid)
             {

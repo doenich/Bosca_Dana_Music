@@ -16,14 +16,16 @@ namespace Bosca_Dana_Music.Data
         }
 
         public DbSet<Bosca_Dana_Music.Models.Genre> Genre { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Genre>().ToTable("Genre");
-            modelBuilder.Entity<Artist>().ToTable("Artist");
-        }
-
         public DbSet<Bosca_Dana_Music.Artist> Artist { get; set; }
+        public DbSet<Bosca_Dana_Music.Models.Song> Song { get; set; }
+
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //    modelBuilder.Entity<Genre>().ToTable("Genre");
+        //    modelBuilder.Entity<Artist>().ToTable("Artist");
+        //}
+
+
     }
 
 
