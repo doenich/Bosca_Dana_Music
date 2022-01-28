@@ -17,12 +17,15 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1"> 
+                    <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="" asp-action="Artist">Artists</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Artists" asp-action="Index">Artists</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Genres</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Genres" asp-action="Index">Genres</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Songs" asp-action="Index">Songs</a>
                         </li>
                     </ul>
                 </div>

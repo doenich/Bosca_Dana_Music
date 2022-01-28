@@ -10,22 +10,22 @@ using Bosca_Dana_Music.Models;
 
 namespace Bosca_Dana_Music.Controllers
 {
-    public class GenreController : Controller
+    public class GenresController : Controller
     {
         private readonly Bosca_Dana_MusicContext _context;
 
-        public GenreController(Bosca_Dana_MusicContext context)
+        public GenresController(Bosca_Dana_MusicContext context)
         {
             _context = context;
         }
 
-        // GET: Genre
+        // GET: Genres
         public async Task<IActionResult> Index()
         {
             return View(await _context.Genre.ToListAsync());
         }
 
-        // GET: Genre/Details/5
+        // GET: Genres/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -43,13 +43,13 @@ namespace Bosca_Dana_Music.Controllers
             return View(genre);
         }
 
-        // GET: Genre/Create
+        // GET: Genres/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Genre/Create
+        // POST: Genres/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -58,6 +58,9 @@ namespace Bosca_Dana_Music.Controllers
         {
             if (ModelState.IsValid)
             {
+                Genre last = _context.Genre.OrderByDescending(g => g.GenreId).FirstOrDefault();
+
+                genre.GenreId = last.GenreId + 1;
                 _context.Add(genre);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -65,7 +68,7 @@ namespace Bosca_Dana_Music.Controllers
             return View(genre);
         }
 
-        // GET: Genre/Edit/5
+        // GET: Genres/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -81,7 +84,7 @@ namespace Bosca_Dana_Music.Controllers
             return View(genre);
         }
 
-        // POST: Genre/Edit/5
+        // POST: Genres/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
@@ -116,7 +119,7 @@ namespace Bosca_Dana_Music.Controllers
             return View(genre);
         }
 
-        // GET: Genre/Delete/5
+        // GET: Genres/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -134,7 +137,7 @@ namespace Bosca_Dana_Music.Controllers
             return View(genre);
         }
 
-        // POST: Genre/Delete/5
+        // POST: Genres/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

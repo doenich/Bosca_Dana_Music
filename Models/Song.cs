@@ -20,21 +20,19 @@ namespace Bosca_Dana_Music.Models
 
 
         public int ArtistId { get; set; }
-        [ForeignKey("ArtistId")]
         public Artist Artist { get; set; }
 
 
         public int GenreId { get; set; }
-        [ForeignKey("GenreId")]
         public Genre Genre { get; set; }
 
         public Song()
         {
-            SongId = -1;
+            SongId = 0;
             Name = string.Empty;
             ReleasedYear = string.Empty;
-            ArtistId = -1;
-            GenreId = -1;
+            ArtistId = 0;
+            GenreId = 0;
             Artist = new Artist();
             Genre = new Genre();
         }

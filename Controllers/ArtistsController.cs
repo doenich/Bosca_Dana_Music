@@ -5,28 +5,27 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Bosca_Dana_Music;
 using Bosca_Dana_Music.Data;
-using Bosca_Dana_Music.Models;
 
 namespace Bosca_Dana_Music.Controllers
 {
-    public class SongController : Controller
+    public class ArtistsController : Controller
     {
         private readonly Bosca_Dana_MusicContext _context;
 
-        public SongController(Bosca_Dana_MusicContext context)
+        public ArtistsController(Bosca_Dana_MusicContext context)
         {
             _context = context;
         }
 
-        // GET: Song
+        // GET: Artists
         public async Task<IActionResult> Index()
         {
-            var bosca_Dana_MusicContext = _context.Song;
-            return View(await bosca_Dana_MusicContext.ToListAsync());
+            return View(await _context.Artist.ToListAsync());
         }
 
-        // GET: Song/Details/5
+        // GET: Artists/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -34,45 +33,42 @@ namespace Bosca_Dana_Music.Controllers
                 return NotFound();
             }
 
-            var song = await _context.Song
-                .Include(s => s.Artist)
-                .Include(s => s.Genre)
-                .FirstOrDefaultAsync(m => m.SongId == id);
-            if (song == null)
+            var artist = await _context.Artist
+                .FirstOrDefaultAsync(m => m.ArtistId == id);
+            if (artist == null)
             {
                 return NotFound();
             }
 
-            return View(song);
+            return View(artist);
         }
 
-        // GET: Song/Create
+        // GET: Artists/Create
         public IActionResult Create()
         {
-            ViewData["ArtistId"] = new SelectList(_context.Artist, "ArtistId", "ArtistId");
-            ViewData["GenreId"] = new SelectList(_context.Genre, "GenreId", "GenreId");
             return View();
         }
 
-        // POST: Song/Create
+        // POST: Artists/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Name,ReleasedYear,ArtistId,GenreId")] Song song)
+        public async Task<IActionResult> Create([Bind("Name,Description,FormedDate")] Artist artist)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(song);
+                Artist last = _context.Artist.OrderByDescending(a => a.ArtistId).FirstOrDefault();
+
+                artist.ArtistId = last.ArtistId + 1;
+                _context.Add(artist);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ArtistId"] = new SelectList(_context.Artist, "ArtistId", "ArtistId", song.ArtistId);
-            ViewData["GenreId"] = new SelectList(_context.Genre, "GenreId", "GenreId", song.GenreId);
-            return View(song);
+            return View(artist);
         }
 
-        // GET: Song/Edit/5
+        // GET: Artists/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -80,24 +76,22 @@ namespace Bosca_Dana_Music.Controllers
                 return NotFound();
             }
 
-            var song = await _context.Song.FindAsync(id);
-            if (song == null)
+            var artist = await _context.Artist.FindAsync(id);
+            if (artist == null)
             {
                 return NotFound();
             }
-            ViewData["ArtistId"] = new SelectList(_context.Artist, "ArtistId", "ArtistId", song.ArtistId);
-            ViewData["GenreId"] = new SelectList(_context.Genre, "GenreId", "GenreId", song.GenreId);
-            return View(song);
+            return View(artist);
         }
 
-        // POST: Song/Edit/5
+        // POST: Artists/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("SongId,Name,ReleasedYear,ArtistId,GenreId")] Song song)
+        public async Task<IActionResult> Edit(int id, [Bind("ArtistId,Name,Description,FormedDate")] Artist artist)
         {
-            if (id != song.SongId)
+            if (id != artist.ArtistId)
             {
                 return NotFound();
             }
@@ -106,12 +100,12 @@ namespace Bosca_Dana_Music.Controllers
             {
                 try
                 {
-                    _context.Update(song);
+                    _context.Update(artist);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!SongExists(song.SongId))
+                    if (!ArtistExists(artist.ArtistId))
                     {
                         return NotFound();
                     }
@@ -122,12 +116,10 @@ namespace Bosca_Dana_Music.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ArtistId"] = new SelectList(_context.Artist, "ArtistId", "ArtistId", song.ArtistId);
-            ViewData["GenreId"] = new SelectList(_context.Genre, "GenreId", "GenreId", song.GenreId);
-            return View(song);
+            return View(artist);
         }
 
-        // GET: Song/Delete/5
+        // GET: Artists/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -135,32 +127,30 @@ namespace Bosca_Dana_Music.Controllers
                 return NotFound();
             }
 
-            var song = await _context.Song
-                .Include(s => s.Artist)
-                .Include(s => s.Genre)
-                .FirstOrDefaultAsync(m => m.SongId == id);
-            if (song == null)
+            var artist = await _context.Artist
+                .FirstOrDefaultAsync(m => m.ArtistId == id);
+            if (artist == null)
             {
                 return NotFound();
             }
 
-            return View(song);
+            return View(artist);
         }
 
-        // POST: Song/Delete/5
+        // POST: Artists/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var song = await _context.Song.FindAsync(id);
-            _context.Song.Remove(song);
+            var artist = await _context.Artist.FindAsync(id);
+            _context.Artist.Remove(artist);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool SongExists(int id)
+        private bool ArtistExists(int id)
         {
-            return _context.Song.Any(e => e.SongId == id);
+            return _context.Artist.Any(e => e.ArtistId == id);
         }
     }
 }

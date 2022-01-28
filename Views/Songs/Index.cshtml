@@ -38,10 +38,10 @@
                 @Html.DisplayFor(modelItem => item.ReleasedYear)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ArtistId)
+                @Html.DisplayFor(modelItem => item.Artist.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.GenreId)
+                @Html.DisplayFor(modelItem => item.Genre.Name)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.SongId">Edit</a> |

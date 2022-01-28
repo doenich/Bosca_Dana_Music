@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace Bosca_Dana_Music
 {
@@ -12,6 +13,7 @@ namespace Bosca_Dana_Music
         
 
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        [Key]
         public int ArtistId { get; set; }
 
         public string Name { get; set; }
@@ -19,6 +21,8 @@ namespace Bosca_Dana_Music
         public string Description { get; set; }
 
         public DateTime FormedDate { get; set;  }
+
+        public ICollection<Models.Song> Songs { get; set; }
 
         public Artist(int iD, string name, string description, DateTime formedDate)
         {
@@ -30,7 +34,7 @@ namespace Bosca_Dana_Music
 
         public Artist()
         {
-            ArtistId = -1;
+            ArtistId = 0;
             Name = string.Empty;
             Description = string.Empty;
             FormedDate = new DateTime();
